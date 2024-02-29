@@ -1,80 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MEE4 Status</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            text-align: center;
-        }
+      body {
+        font-family: "Arial", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        text-align: center;
+      }
 
-        header {
-            background-color: #3498db;
-            color: #fff;
-            padding: 1em;
-            text-align: center;
-        }
+      header {
+        background-color: #3498db;
+        color: #fff;
+        padding: 1em;
+        text-align: center;
+      }
 
-        section {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-        }
+      section {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+      }
 
-        footer {
-            text-align: center;
-            padding: 1em;
-            background-color: #4285f4;
-            color: #fff;
-            margin-top: auto;
-        }
+      footer {
+        text-align: center;
+        padding: 1em;
+        background-color: #4285f4;
+        color: #fff;
+        margin-top: auto;
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <header>
-        <h1>MEE4 Status</h1>
-        <p>The status of the discord bot MEE4. Click on a server to see more information.</p>
+      <h1>MEE4 Status</h1>
+      <p>
+        The status of the discord bot MEE4. Click on a server to see more
+        information.
+      </p>
     </header>
 
     <section>
-        <h2>Bot Statistics</h2>
-        <p><b>Status:</b>🔴Offline</p>
+      <h2>Bot Statistics</h2>
+      <p id="status"><b>Status:</b>🟢Online</p>
+      <script>
+        const status = document.getElementById("status");
+        // Array with different statuses
+        const statuses = ["🟢Online", "🔴Offline", "🟡Under Maintenance"];
+
+        let index = 0; // Start with the first status
+
+        setInterval(() => {
+          status.innerHTML = `<b>Status:</b>${statuses[index]}`;
+          index = (index + 1) % statuses.length; // Loop through statuses
+        }, 3600000); // 60000 milliseconds = 1 minute
+      </script>
     </section>
 
-    <hr>
+    <hr />
 
     <section>
-        <h2>Scheduled Maintenance</h2>
-        <p>Scheduled Maintenance for Thursday 29th February 20:00 GMT+0. <br />
-        Improvements & Bug Fixes will be included in this maintenance.</p>
+      <h2>Scheduled Maintenance</h2>
+      <p id="schmain">
+        Scheduled Maintenance for Saturday ${getNextSaturdayDate()} at 20:00
+        GMT+0. <br />
+      </p>
+      <script>
+        const schmainauto = document.getElementById("schmain");
+
+        function getNextSaturdayDate() {
+          const today = new Date();
+          const daysUntilNextSaturday =
+            7 - today.getDay() + (today.getDay() <= 3 ? 0 : 7);
+          const nextSaturday = new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate() + daysUntilNextSaturday
+          );
+          return nextSaturday.toLocaleString("en-UK", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+          });
+        }
+
+        const date = new Date().getDate();
+        schmainauto.textContent = `Scheduled Maintenance for ${getNextSaturdayDate()} at 20:00 GMT+0.`;
+
+        // Maintenance History
+        const maintenanceHistory = document.getElementById(
+          "maintenance-history"
+        );
+        const currentMaintenance = `Scheduled Maintenance for ${getNextSaturdayDate()} at 20:00 GMT+0.`;
+
+        // Check if there is an existing maintenance record
+        if (localStorage.getItem("maintenanceRecord")) {
+          maintenanceHistory.textContent = `Maintenance History: ${localStorage.getItem(
+            "maintenanceRecord"
+          )}`;
+        }
+
+        // Update maintenance record
+        localStorage.setItem("maintenanceRecord", currentMaintenance);
+
+        // Automatically delete the maintenance record after a week
+        setTimeout(() => {
+          localStorage.removeItem("maintenanceRecord");
+          maintenanceHistory.textContent =
+            "There are currently no past maintenance events for this bot.";
+        }, 7 * 24 * 60 * 60 * 1000); // 7 days in milliseconds
+      </script>
     </section>
 
     <section>
-        <h2>Maintenance History</h2>
-        <p>There are currently no past maintenance events for this bot.</p>
+      <h2>Maintenance History</h2>
+      <p id="maintenance-history">There are no maintenance history records available at this time.</p>
     </section>
 
-    <hr>
+    <hr />
 
     <section>
-        <h2>Maintenance Issues</h2>
-        <p>There are no issues for this bot to show.</p>
+      <h2>Maintenance Issues</h2>
+      <p>There are no issues for this bot to show.</p>
     </section>
 
     <section>
-        <h2>Issue History</h2>
-        <p>There are no issue history records available at this time.</p>
+      <h2>Issue History</h2>
+      <p>There are no issue history records available at this time.</p>
     </section>
 
     <footer>© 2024 MEE4 Status. All rights reserved.</footer>
-</body>
+  </body>
 </html>
