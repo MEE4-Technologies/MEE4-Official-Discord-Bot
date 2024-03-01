@@ -36,6 +36,25 @@
         color: #fff;
         margin-top: auto;
       }
+
+      .status-banner {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        transition: background-color 0.5s;
+        background-color: lightskyblue;
+      }
+
+      #status {
+        font-size: 32px;
+      }
+
+      .status-message {
+        font-size: 18px;
+        margin-top: 10px;
+      }
     </style>
   </head>
   <body>
@@ -47,22 +66,28 @@
       </p>
     </header>
 
-    <section>
-      <h2>Bot Statistics</h2>
-      <p id="status"><b>Status:</b>🔴Offline</p>
+    <div class="status-banner" id="statusBanner">
+      <h2 id="status">Loading...</h2>
       <script>
         const status = document.getElementById("status");
-        // Array with different statuses
-        const statuses = ["🟢Online", "🟡Under Maintenance","🔴Offline"];
+        const statusBanner = document.getElementById("statusBanner");
 
-        let index = 0; // Start with the first status
+        const statusData = [
+          { text: "🟢Online", color: "#28a745" },
+          { text: "🟡Under Maintenance", color: "#ffc107" },
+          { text: "🔴Offline", color: "#dc3545" },
+        ];
+
+        let index = 2; 
 
         setInterval(() => {
-          status.innerHTML = `<b>Status:</b>${statuses[index]}`;
-          index = (index + 1) % statuses.length; // Loop through statuses
-        }, 5000); // 60000 milliseconds = 1 minute
+          const { text, color } = statusData[index];
+          status.innerText = text;
+          statusBanner.style.backgroundColor = color;
+          index = (index + 1) % statusData.length;
+        }, 60000);
       </script>
-    </section>
+    </div>
 
     <hr />
 
@@ -121,19 +146,39 @@
 
     <section>
       <h2>Maintenance History</h2>
-      <p id="maintenance-history">There are no maintenance history records available at this time.</p>
+      <p id="maintenance-history">
+        There are no maintenance history records available at this time.
+      </p>
     </section>
 
     <hr />
 
     <section>
-      <h2>Maintenance Issues</h2>
-      <p>There are no issues for this bot to show.</p>
+      <h2>Issues</h2>
+      <p id="issues">There are no issues for this bot to show.</p>
+      <script>
+        const issues = document.getElementById("issues");
+        const errorMessage = ["There are no issues to display at the moment."];
+        issues.innerText = errorMessage;
+      </script>
     </section>
 
     <section>
       <h2>Issue History</h2>
-      <p>There are no issue history records available at this time.</p>
+      <p id="issueHistory">There is no issue history record available.</p>
+      <script>
+        const issueHistory = document.getElementById("issueHistory");
+
+        // Issue history records
+        const issue1 = "There are no issues to record at the moment.";
+
+        issueHistory.innerText = issue1;
+
+        setTimeout(() => {
+          issueHistory.innerText =
+            "There is no issue history record available.";
+        }, 7 * 24 * 60 * 60 * 1000);
+      </script>
     </section>
 
     <footer>© 2024 MEE4 Status. All rights reserved.</footer>
