@@ -155,7 +155,12 @@
 
     <section>
       <h2>Issues</h2>
-      <p>There are no issues found!</p>
+      <p id="issues">There are no issues for this bot to show.</p>
+      <script>
+        const issues = document.getElementById("issues");
+        const errorMessage = ["There are no issues to display at the moment."];
+        issues.innerText = errorMessage;
+      </script>
     </section>
 
     <section>
